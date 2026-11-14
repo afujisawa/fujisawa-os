@@ -7,7 +7,7 @@ description: Fedora Atomic mínimo (Universal Blue) com o desktop COSMIC e o nav
 
 # Imagem base mínima da Universal Blue (sem ambiente desktop)
 base-image: ghcr.io/ublue-os/base-main
-image-version: latest # You can pin to a specific version of Fedora as well
+image-version: 44 # fixado: bootc-image-builder não gera anaconda-iso no Fedora 45 (osbuild/image-builder#2704)
 
 # module configuration, executed in order
 modules:
