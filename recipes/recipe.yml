@@ -24,6 +24,8 @@ modules:
   - type: script
     snippets:
       - systemctl set-default graphical.target # inicia direto no login gráfico
+    scripts:
+      - os-release.sh # identifica o sistema como "Fujisawa OS"
 
   - type: systemd
     system:
