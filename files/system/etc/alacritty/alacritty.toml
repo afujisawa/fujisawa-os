@@ -1,0 +1,25 @@
+# Configuração padrão do Alacritty para todos os usuários.
+# Origem: dotfiles do ultramarine-setup, adaptados para a imagem:
+#  - imports apontam para /etc/alacritty (config de sistema)
+#  - cores na variante Tokyo Night Storm (mesma paleta do COSMIC e do niri)
+#  - fonte JetBrains Mono do Fedora (a versão Nerd Font não está na imagem)
+# Cada usuário pode sobrescrever em ~/.config/alacritty/alacritty.toml.
+
+[general]
+import = [
+	"/etc/alacritty/tokyo-night-storm.toml",
+	"/etc/alacritty/keybindings.toml"
+]
+
+[window]
+dimensions = { columns = 120, lines = 35 }
+padding = { x = 15, y = 15 }
+opacity = 1.00
+
+[font]
+normal = { family = "JetBrains Mono", style = "Regular" }
+size = 12.0
+
+[cursor.style]
+shape = "Underline"
+blinking = "On"
