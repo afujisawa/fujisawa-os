@@ -3,11 +3,39 @@
 # image will be published to ghcr.io/<user>/<name>
 name: fujisawa-os
 # description will be included in the image's metadata
-description: Fedora Atomic mínimo (Universal Blue) com o desktop COSMIC e o navegador Vivaldi.
+description: Fedora Atomic mínimo (Universal Blue) com o desktop COSMIC rodando sobre o niri e o navegador Vivaldi.
 
 # Imagem base mínima da Universal Blue (sem ambiente desktop)
 base-image: ghcr.io/ublue-os/base-main
 image-version: 44 # fixado: bootc-image-builder não gera anaconda-iso no Fedora 45 (osbuild/image-builder#2704)
+
+# Estágio de build: compila o cosmic-ext-alternative-startup, a peça que permite
+# ao cosmic-session usar o niri como compositor. Não é empacotado no Fedora.
+# https://github.com/Drakulix/cosmic-ext-alternative-startup
+stages:
+  - name: cosmic-ext-alternative-startup
+    from: docker.io/library/rust:1
+    modules:
+      - type: script
+        env:
+          REPO: https://github.com/Drakulix/cosmic-ext-alternative-startup
+          COMMIT: 8ceda00197c7ec0905cf1dccdc2d67d738e45417 # fixado para builds reproduzíveis
+        snippets:
+          - >-
+            git init -q /src &&
+            git -C /src fetch -q --depth 1 "$REPO" "$COMMIT" &&
+            git -C /src checkout -q FETCH_HEAD &&
+            cargo build --release --locked --manifest-path /src/Cargo.toml &&
+            install -Dm755 /src/target/release/cosmic-ext-alternative-startup /out/cosmic-ext-alternative-startup
+
+  # Estágio de build: gera o tema escuro padrão do COSMIC na paleta Tokyo Night
+  # Storm, usando a própria biblioteca de temas do COSMIC (cosmic-theme)
+  - name: cosmic-theme
+    from: docker.io/library/rust:1
+    modules:
+      - type: script
+        scripts:
+          - cosmic-theme-tokyo-storm.sh
 
 # module configuration, executed in order
 modules:
@@ -16,16 +44,47 @@ modules:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
 
+  - type: copy
+    from: cosmic-ext-alternative-startup
+    src: /out/cosmic-ext-alternative-startup
+    dest: /usr/bin/cosmic-ext-alternative-startup
+
   - type: dnf
     group-install:
       packages:
         - cosmic-desktop # COSMIC (sessão, painel, greeter e apps base)
+    install:
+      packages:
+        # niri como compositor da sessão "COSMIC on niri"
+        - niri
+        - xwayland-satellite # apps X11 no niri
+        - alacritty # terminal (no lugar do COSMIC Terminal)
+        - jetbrains-mono-fonts-all # fonte do Alacritty
+      # O COSMIC já fornece painel, notificações, launcher, bloqueio e fundo;
+      # evita os "Recommends" do niri que fariam o mesmo papel
+      exclude:
+        - waybar
+        - mako
+        - fuzzel
+        - swaylock
+        - swaybg
+
+  # Tema Tokyo Night Storm como padrão do COSMIC. Precisa vir depois do dnf:
+  # o pacote do COSMIC instala os temas padrão no mesmo lugar.
+  - type: copy
+    from: cosmic-theme
+    src: /out/cosmic/
+    dest: /usr/share/cosmic/
 
   - type: script
     snippets:
       - systemctl set-default graphical.target # inicia direto no login gráfico
+      # remove a sessão "Niri" pura do login (sem painel); ficam "COSMIC on niri" e "COSMIC"
+      - rm -f /usr/share/wayland-sessions/niri.desktop
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
+      - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
+      - terminal.sh # Alacritty no lugar do COSMIC Terminal
 
   - type: systemd
     system:
