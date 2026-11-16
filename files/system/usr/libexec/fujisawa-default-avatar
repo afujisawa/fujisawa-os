@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Define o samurai como foto padrão dos usuários que ainda não têm uma.
+# Roda a cada boot, antes da tela de login (fujisawa-default-avatar.service).
+# Usuários que já escolheram uma foto não são alterados.
+set -euo pipefail
+
+DEFAULT=/usr/share/pixmaps/faces/fujisawa-samurai.png
+ICONS=/var/lib/AccountsService/icons
+USERS=/var/lib/AccountsService/users
+
+[[ -r "$DEFAULT" ]] || exit 0
+
+getent passwd | awk -F: '$3 >= 1000 && $3 < 60000 { print $1 }' | while read -r user; do
+  icon="$ICONS/$user"
+  [[ -e "$icon" ]] && continue
+
+  install -D -m 0644 "$DEFAULT" "$icon"
+
+  cfg="$USERS/$user"
+  if [[ ! -f "$cfg" ]]; then
+    install -d -m 0700 "$USERS"
+    printf '[User]\nIcon=%s\n' "$icon" > "$cfg"
+    chmod 0600 "$cfg"
+  elif ! grep -q '^Icon=' "$cfg"; then
+    if grep -q '^\[User\]' "$cfg"; then
+      sed -i "/^\[User\]/a Icon=$icon" "$cfg"
+    else
+      printf '\n[User]\nIcon=%s\n' "$icon" >> "$cfg"
+    fi
+  fi
+  echo "Foto padrão definida para $user"
+done
+
+command -v restorecon >/dev/null && restorecon -R /var/lib/AccountsService || true

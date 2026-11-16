@@ -98,16 +98,22 @@ modules:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
+      - wallpaper.sh # papel de parede padrão do COSMIC
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
       - claude-code.sh # Claude Code oficial em /usr/bin/claude
       - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão
       - oh-my-posh.sh # oh-my-posh oficial com temas e Symbols Nerd Font
       - tmux-plugins.sh # plugins do .tmux.conf padrão pré-instalados
+      - plymouth-theme.sh # logo do Fujisawa OS na inicialização (fundo preto)
 
   - type: systemd
     system:
       enabled:
         - cosmic-greeter.service
+        - fujisawa-default-avatar.service # samurai como foto padrão dos usuários
+
+  # Regenera o initramfs, onde fica o tema de boot (Plymouth)
+  - type: initramfs
 
   # Apps pelo Flathub: Vivaldi, Obsidian e ONLYOFFICE (instalados no primeiro boot, atualizam fora da imagem)
   - type: default-flatpaks
