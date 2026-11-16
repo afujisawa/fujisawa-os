@@ -65,6 +65,13 @@ modules:
         - jetbrains-mono-fonts-all # fonte do Alacritty
         # Editores (o Zed oficial é instalado pelo script zed.sh)
         - code # Visual Studio Code
+        - ShellCheck # verificação de scripts shell (usado pelo Zed)
+        - shfmt # formatação de scripts shell (usado pelo Zed)
+        - clang-tools-extra # clang-format (formatação de C no Zed) e clangd (LSP de C)
+        # Shell (o tmux, o fzf e o bc já vêm na imagem base)
+        - zsh
+        - zsh-autosuggestions # usados pelo .zshrc padrão
+        - zsh-syntax-highlighting
       # O COSMIC já fornece painel, notificações, launcher, bloqueio e fundo;
       # evita os "Recommends" do niri que fariam o mesmo papel
       exclude:
@@ -91,6 +98,10 @@ modules:
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
+      - claude-code.sh # Claude Code oficial em /usr/bin/claude
+      - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão
+      - oh-my-posh.sh # oh-my-posh oficial com temas e Symbols Nerd Font
+      - tmux-plugins.sh # plugins do .tmux.conf padrão pré-instalados
 
   - type: systemd
     system:
