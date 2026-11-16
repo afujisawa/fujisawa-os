@@ -109,12 +109,14 @@ modules:
       enabled:
         - cosmic-greeter.service
 
-  # Vivaldi pelo Flathub (instalado no primeiro boot, atualiza fora da imagem)
+  # Apps pelo Flathub: Vivaldi, Obsidian e ONLYOFFICE (instalados no primeiro boot, atualizam fora da imagem)
   - type: default-flatpaks
     configurations:
       - notify: true
         scope: system
         install:
           - com.vivaldi.Vivaldi
+          - md.obsidian.Obsidian
+          - org.onlyoffice.desktopeditors
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
