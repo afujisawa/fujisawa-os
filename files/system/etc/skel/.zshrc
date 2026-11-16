@@ -92,7 +92,9 @@ setopt autocd
 # Allow Bash-style globbing
 unsetopt nomatch
 
-if [[ -z "$TMUX" && -n "$PS1" ]]; then
+# Abre o tmux automaticamente, exceto nos terminais integrados do Zed
+# (IN_ZED, definido no settings.json do Zed) e do VS Code
+if [[ -z "$TMUX" && -z "$IN_ZED" && "$TERM_PROGRAM" != "vscode" && -n "$PS1" ]]; then
     exec tmux new-session -A -s af
 fi
 
