@@ -68,6 +68,7 @@ modules:
         - ShellCheck # verificação de scripts shell (usado pelo Zed)
         - shfmt # formatação de scripts shell (usado pelo Zed)
         - clang-tools-extra # clang-format (formatação de C no Zed) e clangd (LSP de C)
+        - glibc-devel # cabeçalhos padrão de C (stdio.h etc.) para o clangd; o compilador fica no toolbox
         # Shell (o tmux, o fzf e o bc já vêm na imagem base)
         - zsh
         - zsh-autosuggestions # usados pelo .zshrc padrão
