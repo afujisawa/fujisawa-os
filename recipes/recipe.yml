@@ -50,6 +50,9 @@ modules:
     dest: /usr/bin/cosmic-ext-alternative-startup
 
   - type: dnf
+    repos:
+      keys:
+        - https://packages.microsoft.com/keys/microsoft.asc # VS Code (repo em files/system/etc/yum.repos.d)
     group-install:
       packages:
         - cosmic-desktop # COSMIC (sessão, painel, greeter e apps base)
@@ -60,6 +63,8 @@ modules:
         - xwayland-satellite # apps X11 no niri
         - alacritty # terminal (no lugar do COSMIC Terminal)
         - jetbrains-mono-fonts-all # fonte do Alacritty
+        # Editores (o Zed oficial é instalado pelo script zed.sh)
+        - code # Visual Studio Code
       # O COSMIC já fornece painel, notificações, launcher, bloqueio e fundo;
       # evita os "Recommends" do niri que fariam o mesmo papel
       exclude:
@@ -85,6 +90,7 @@ modules:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
+      - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
 
   - type: systemd
     system:
