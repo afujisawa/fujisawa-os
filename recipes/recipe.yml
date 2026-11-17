@@ -40,6 +40,10 @@ stages:
 # module configuration, executed in order
 modules:
   - type: files
+    # Sem cache: o conteúdo de files/ chega por uma montagem de outro estágio,
+    # que não entra na chave de cache do podman; com cache, builds locais
+    # reaproveitavam uma cópia antiga dos arquivos
+    no-cache: true
     files:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
@@ -68,6 +72,7 @@ modules:
         - ShellCheck # verificação de scripts shell (usado pelo Zed)
         - shfmt # formatação de scripts shell (usado pelo Zed)
         - clang-tools-extra # clang-format (formatação de C no Zed) e clangd (LSP de C)
+        - glibc-devel # cabeçalhos padrão de C (stdio.h etc.) para o clangd; o compilador fica no toolbox
         # Shell (o tmux, o fzf e o bc já vêm na imagem base)
         - zsh
         - zsh-autosuggestions # usados pelo .zshrc padrão
@@ -97,23 +102,31 @@ modules:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
+      - wallpaper.sh # papel de parede padrão do COSMIC
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
       - claude-code.sh # Claude Code oficial em /usr/bin/claude
       - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão
       - oh-my-posh.sh # oh-my-posh oficial com temas e Symbols Nerd Font
       - tmux-plugins.sh # plugins do .tmux.conf padrão pré-instalados
+      - plymouth-theme.sh # logo do Fujisawa OS na inicialização (fundo preto)
 
   - type: systemd
     system:
       enabled:
         - cosmic-greeter.service
+        - fujisawa-default-avatar.service # samurai como foto padrão dos usuários
 
-  # Vivaldi pelo Flathub (instalado no primeiro boot, atualiza fora da imagem)
+  # Regenera o initramfs, onde fica o tema de boot (Plymouth)
+  - type: initramfs
+
+  # Apps pelo Flathub: Vivaldi, Obsidian e ONLYOFFICE (instalados no primeiro boot, atualizam fora da imagem)
   - type: default-flatpaks
     configurations:
       - notify: true
         scope: system
         install:
           - com.vivaldi.Vivaldi
+          - md.obsidian.Obsidian
+          - org.onlyoffice.desktopeditors
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
