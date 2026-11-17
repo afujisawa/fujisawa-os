@@ -40,6 +40,10 @@ stages:
 # module configuration, executed in order
 modules:
   - type: files
+    # Sem cache: o conteúdo de files/ chega por uma montagem de outro estágio,
+    # que não entra na chave de cache do podman; com cache, builds locais
+    # reaproveitavam uma cópia antiga dos arquivos
+    no-cache: true
     files:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
