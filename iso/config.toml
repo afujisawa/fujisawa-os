@@ -1,0 +1,14 @@
+# Configuração do bootc-image-builder para a ISO do Fujisawa OS
+# (usada pelo workflow .github/workflows/build-iso.yml).
+# Substitui o kickstart padrão (que define idioma, fuso, root bloqueado e
+# apaga o disco sem perguntar) por um interativo: o instalador pergunta o
+# disco e mostra a tela de criação de usuário.
+[customizations.installer.kickstart]
+contents = """
+graphical
+
+%post --erroronfail
+# Sistema instalado passa a buscar atualizações no ghcr (e não na cópia da ISO)
+bootc switch --mutate-in-place --transport registry ghcr.io/afujisawa/fujisawa-os:latest
+%end
+"""
