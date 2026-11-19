@@ -96,8 +96,10 @@ modules:
   - type: script
     snippets:
       - systemctl set-default graphical.target # inicia direto no login gráfico
-      # remove a sessão "Niri" pura do login (sem painel); ficam "COSMIC on niri" e "COSMIC"
-      - rm -f /usr/share/wayland-sessions/niri.desktop
+      # deixa só a sessão "COSMIC on niri" no login: remove a "Niri" pura (sem
+      # painel) e a "COSMIC" (cosmic-comp), que o cosmic-greeter escolhia por padrão
+      - rm -f /usr/share/wayland-sessions/niri.desktop /usr/share/wayland-sessions/cosmic.desktop
+      - test "$(ls /usr/share/wayland-sessions)" = cosmic-ext-niri.desktop
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
