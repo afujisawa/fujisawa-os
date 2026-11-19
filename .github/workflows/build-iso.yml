@@ -22,7 +22,9 @@ env:
 jobs:
   build-iso:
     name: Gerar ISO
-    runs-on: ubuntu-latest
+    # Fixado no 24.04: no ubuntu-latest (26.04, kernel 7.0) o osbuild falha com
+    # "mount: /run/osbuild/tree/dev: permission denied" (osbuild/osbuild#2579)
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: read
@@ -39,12 +41,6 @@ jobs:
           sudo podman pull "$IMAGE"
           sudo podman pull "$BUILDER_IMAGE"
 
-      # O AppArmor do Ubuntu 24.04 (runner) bloqueia os mounts que o osbuild faz
-      # dentro do bubblewrap ("mount: /run/osbuild/tree/dev: permission denied").
-      # Libera namespaces de usuário e roda o builder sem perfil AppArmor.
-      - name: Liberar AppArmor para o osbuild
-        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-
       # iso/config.toml troca o kickstart padrão por um interativo: o instalador
       # pergunta o disco e mostra a criação de usuário, e o sistema instalado
       # passa a buscar atualizações em ghcr.io/afujisawa/fujisawa-os:latest
@@ -53,7 +49,6 @@ jobs:
           mkdir -p output
           sudo podman run --rm --privileged \
             --security-opt label=type:unconfined_t \
-            --security-opt apparmor=unconfined \
             -v "$PWD/iso/config.toml:/config.toml:ro" \
             -v "$PWD/output:/output" \
             -v /var/lib/containers/storage:/var/lib/containers/storage \
