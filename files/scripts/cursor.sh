@@ -6,7 +6,7 @@
 #  - /usr/share/icons/default/index.theme: padrão do XCursor (apps sem config)
 #  - gschema override: cursor-theme do GTK (org.gnome.desktop.interface)
 #  - XCURSOR_THEME/SIZE: start-cosmic-ext-niri e usr/lib/environment.d/60-cursor.conf
-#  - niri: bloco cursor em /etc/niri/config.kdl (niri-config.sh)
+#  - niri: bloco cursor em files/system/etc/niri/config.kdl
 set -oue pipefail
 
 VERSION=v2.0.7

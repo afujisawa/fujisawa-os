@@ -100,9 +100,11 @@ modules:
       # painel) e a "COSMIC" (cosmic-comp), que o cosmic-greeter escolhia por padrão
       - rm -f /usr/share/wayland-sessions/niri.desktop /usr/share/wayland-sessions/cosmic.desktop
       - test "$(ls /usr/share/wayland-sessions)" = cosmic-ext-niri.desktop
+      # config padrão do niri (files/system/etc/niri/config.kdl): falha o build se
+      # não for aceita pela versão do niri instalada
+      - niri validate -c /etc/niri/config.kdl
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
-      - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
       - wallpaper.sh # papel de parede padrão do COSMIC
       - panel.sh # remove a dock do COSMIC e põe o botão de Configurações no painel
