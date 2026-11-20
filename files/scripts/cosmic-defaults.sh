@@ -17,7 +17,13 @@ grep -q 'samurai-warrior-night-by-lake.jpg' "$C/com.system76.CosmicBackground/v1
 grep -qx '\["Panel"\]' "$C/com.system76.CosmicPanel/v1/entries"
 grep -q '"com.fujisawa.PanelSettingsButton"' "$C/com.system76.CosmicPanel.Panel/v1/plugins_wings"
 test -f "$A/com.fujisawa.PanelSettingsButton.desktop"
-test -f "$A/com.system76.CosmicSettings.desktop"
+test -f "$A/com.fujisawa.Settings.desktop"
+test -f /usr/share/icons/Cosmic/scalable/categories/preferences-system-symbolic.svg
+command -v cosmic-settings >/dev/null
+# Botões do painel superior (Áreas de Trabalho, Aplicativos, Configurações)
+# como ícones, não texto
+grep -q '"Panel": (' "$C/com.system76.CosmicPanelButton/v1/configs"
+grep -q 'force_presentation: Some(Icon)' "$C/com.system76.CosmicPanelButton/v1/configs"
 
 # Applets usados no painel superior existem
 for applet in $(grep -o '"com\.system76\.[A-Za-z]*"' "$C/com.system76.CosmicPanel.Panel/v1/plugins_wings" | tr -d '"'); do

@@ -1,0 +1,14 @@
+[Desktop Entry]
+# Alvo do botão de Configurações do painel (com.fujisawa.PanelSettingsButton):
+# o cosmic-panel-button usa nome, ícone e Exec deste arquivo. Mesmo Exec das
+# Configurações do COSMIC, mas com a engrenagem simbólica do tema como ícone.
+# Escondido dos menus: lá continua o com.system76.CosmicSettings.
+Name=Settings
+Name[pt_BR]=Configurações
+Comment=Open COSMIC Settings
+Comment[pt_BR]=Abre as Configurações do COSMIC
+Type=Application
+Exec=cosmic-settings
+Icon=preferences-system-symbolic
+Terminal=false
+NoDisplay=true
