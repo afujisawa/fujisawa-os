@@ -3,8 +3,8 @@
 # A release não publica SHA-256; o hash abaixo foi calculado do arquivo da
 # versão fixada. Para atualizar: troque VERSION e SHA256 juntos.
 # Onde o tema é aplicado:
-#  - /usr/share/icons/default/index.theme: padrão do XCursor (apps sem config)
-#  - gschema override: cursor-theme do GTK (org.gnome.desktop.interface)
+#  - files/overrides/usr/share/icons/default/index.theme: padrão do XCursor
+#  - files/overrides/usr/share/glib-2.0/schemas: cursor-theme do GTK
 #  - XCURSOR_THEME/SIZE: start-cosmic-ext-niri e usr/lib/environment.d/60-cursor.conf
 #  - niri: bloco cursor em files/system/etc/niri/config.kdl
 set -oue pipefail
@@ -24,16 +24,8 @@ rm -rf "/usr/share/icons/$THEME"
 tar -xJf "$tmp/$THEME.tar.xz" -C /usr/share/icons --no-same-owner
 test -f "/usr/share/icons/$THEME/cursors/left_ptr"
 
-install -Dm644 /dev/stdin /usr/share/icons/default/index.theme <<THEME_EOF
-[Icon Theme]
-Name=Default
-Comment=Tema de cursor padrão do Fujisawa OS
-Inherits=${THEME}
-THEME_EOF
-
-install -Dm644 /dev/stdin /usr/share/glib-2.0/schemas/zz1-fujisawa-cursor.gschema.override <<SCHEMA_EOF
-[org.gnome.desktop.interface]
-cursor-theme='${THEME}'
-cursor-size=24
-SCHEMA_EOF
+# index.theme e o gschema override vêm de files/overrides (copiados antes deste
+# script); aqui só compila os schemas do GTK com o override
+grep -qx "Inherits=${THEME}" /usr/share/icons/default/index.theme
+grep -qx "cursor-theme='${THEME}'" /usr/share/glib-2.0/schemas/zz1-fujisawa-cursor.gschema.override
 glib-compile-schemas /usr/share/glib-2.0/schemas
