@@ -105,7 +105,7 @@ modules:
       - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
       - wallpaper.sh # papel de parede padrão do COSMIC
-      - dock.sh # dock do COSMIC oculta por padrão (aparece ao passar o mouse)
+      - dock.sh # remove a dock do COSMIC (fica só o painel superior)
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
       - claude-code.sh # Claude Code oficial em /usr/bin/claude
       - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão

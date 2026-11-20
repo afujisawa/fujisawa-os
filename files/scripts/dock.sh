@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# Dock do COSMIC oculta por padrão: aparece ao levar o mouse à borda onde
-# ela fica. Roda depois do dnf: a configuração padrão é do pacote cosmic-panel.
-# Valores aceitos (cosmic-panel 1.11): Never, OnOverlap, Always.
+# Remove a dock do COSMIC: deixa só o painel superior na lista de painéis.
+# Os apps ficam no cosmic-launcher (Mod+D) e no cosmic-app-library (Mod+Shift+D).
+# Roda depois do dnf: a configuração padrão é do pacote cosmic-panel.
 set -oue pipefail
 
-DIR=/usr/share/cosmic/com.system76.CosmicPanel.Dock/v1
+ENTRIES=/usr/share/cosmic/com.system76.CosmicPanel/v1/entries
 
-test -d "$DIR"
-printf 'Always\n' >"$DIR/autohide"
-grep -qx 'Always' "$DIR/autohide"
+grep -q '"Dock"' "$ENTRIES" # padrão esperado: ["Panel","Dock"]
+printf '["Panel"]\n' >"$ENTRIES"
