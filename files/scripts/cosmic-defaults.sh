@@ -28,3 +28,7 @@ done
 grep -q 'Terminal: "alacritty",' "$C/com.system76.CosmicSettings.Shortcuts/v1/system_actions"
 grep -q '"Alacritty"' "$C/com.system76.CosmicAppList/v1/favorites"
 test -f "$A/Alacritty.desktop"
+
+# Atalho de captura de tela com o Flameshot
+grep -q 'Screenshot: "flameshot gui",' "$C/com.system76.CosmicSettings.Shortcuts/v1/system_actions"
+test -f "$A/org.flameshot.Flameshot.desktop"

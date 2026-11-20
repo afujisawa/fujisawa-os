@@ -66,6 +66,10 @@ modules:
         - niri
         - xwayland-satellite # apps X11 no niri
         - alacritty # terminal (no lugar do COSMIC Terminal)
+        - flameshot # captura de tela (no lugar do COSMIC Screenshot), atalho Print
+        # portal de captura de tela no niri (o Flameshot usa o portal no Wayland);
+        # vinha só como dependência fraca do niri
+        - xdg-desktop-portal-gnome
         - jetbrains-mono-fonts-all # fonte do Alacritty
         # Editores (o Zed oficial é instalado pelo script zed.sh)
         - code # Visual Studio Code
@@ -120,7 +124,7 @@ modules:
         ! rpm -q firefox >/dev/null
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
-      - terminal.sh # esconde o COSMIC Terminal (o Alacritty é o terminal)
+      - hide-cosmic-apps.sh # esconde o COSMIC Terminal e o COSMIC Screenshot (substituídos)
       - cosmic-defaults.sh # confere os padrões do COSMIC de files/overrides
       - cursor.sh # cursor Bibata Modern Ice como padrão
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app

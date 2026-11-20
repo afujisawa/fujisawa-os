@@ -5,6 +5,7 @@
 //  - Mod+D abre o cosmic-launcher, Mod+Shift+D o cosmic-app-library
 //  - Super+Alt+L bloqueia a tela com o cosmic-greeter
 //  - cores do anel de foco e das bordas na paleta Tokyo Night Storm
+//  - Print abre o Flameshot
 //  - cursor Bibata Modern Ice (bloco cursor no fim do arquivo)
 // O niri usa este arquivo (/etc/niri/config.kdl) enquanto o usuário não tiver
 // ~/.config/niri/config.kdl. Para personalizar só para você, copie para lá.
@@ -621,7 +622,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
+    // Print abre o Flameshot (captura de área com edição); Ctrl+Print e
+    // Alt+Print continuam com a captura nativa do niri (tela e janela)
+    Print hotkey-overlay-title="Take a Screenshot: Flameshot" { spawn "flameshot" "gui"; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
