@@ -112,6 +112,12 @@ modules:
       # config padrão do niri (files/system/etc/niri/config.kdl): falha o build se
       # não for aceita pela versão do niri instalada
       - niri validate -c /etc/niri/config.kdl
+      # sem Firefox: o navegador é o Vivaldi (Flathub). Remove se alguma
+      # dependência o trouxer e falha o build se ainda sobrar
+      - >-
+        if rpm -q firefox >/dev/null; then
+        dnf -y remove firefox; fi &&
+        ! rpm -q firefox >/dev/null
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
       - terminal.sh # esconde o COSMIC Terminal (o Alacritty é o terminal)
