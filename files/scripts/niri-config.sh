@@ -5,6 +5,7 @@
 #  - Mod+D abre o cosmic-launcher, Mod+Shift+D o cosmic-app-library
 #  - Super+Alt+L bloqueia a tela com o cosmic-greeter
 #  - cores do anel de foco e das bordas na paleta Tokyo Night Storm
+#  - cursor Bibata Modern Ice
 # O niri usa /etc/niri/config.kdl enquanto o usuário não tiver
 # ~/.config/niri/config.kdl.
 set -oue pipefail
@@ -50,6 +51,21 @@ if grep -qE '^spawn-at-startup "waybar"|spawn "(fuzzel|swaylock)"' "$tmp"; then
   echo "niri-config: ainda há referências a waybar/fuzzel/swaylock" >&2
   exit 1
 fi
+
+# Tema de cursor (Bibata Modern Ice, instalado por cursor.sh). O niri também
+# exporta XCURSOR_THEME/XCURSOR_SIZE para os programas que inicia.
+if grep -qE '^cursor \{' "$tmp"; then
+  echo "niri-config: a config padrão já tem um bloco cursor" >&2
+  exit 1
+fi
+cat >>"$tmp" <<'CURSOR_EOF'
+
+// Tema de cursor padrão do Fujisawa OS
+cursor {
+    xcursor-theme "Bibata-Modern-Ice"
+    xcursor-size 24
+}
+CURSOR_EOF
 
 install -Dm644 "$tmp" "$DEST"
 niri validate -c "$DEST"

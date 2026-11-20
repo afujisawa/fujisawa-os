@@ -106,6 +106,7 @@ modules:
       - terminal.sh # Alacritty no lugar do COSMIC Terminal
       - wallpaper.sh # papel de parede padrão do COSMIC
       - dock.sh # remove a dock do COSMIC (fica só o painel superior)
+      - cursor.sh # cursor Bibata Modern Ice como padrão
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
       - claude-code.sh # Claude Code oficial em /usr/bin/claude
       - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão
