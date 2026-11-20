@@ -93,6 +93,15 @@ modules:
     src: /out/cosmic/
     dest: /usr/share/cosmic/
 
+  # Arquivos que substituem arquivos instalados por pacotes (padrões do COSMIC,
+  # cursor padrão). Precisam vir depois do dnf, senão a instalação dos pacotes
+  # os sobrescreveria. Copiados completos de files/overrides/.
+  - type: files
+    no-cache: true # mesmo motivo do módulo files acima
+    files:
+      - source: overrides
+        destination: /
+
   - type: script
     snippets:
       - systemctl set-default graphical.target # inicia direto no login gráfico
@@ -100,11 +109,14 @@ modules:
       # painel) e a "COSMIC" (cosmic-comp), que o cosmic-greeter escolhia por padrão
       - rm -f /usr/share/wayland-sessions/niri.desktop /usr/share/wayland-sessions/cosmic.desktop
       - test "$(ls /usr/share/wayland-sessions)" = cosmic-ext-niri.desktop
+      # config padrão do niri (files/system/etc/niri/config.kdl): falha o build se
+      # não for aceita pela versão do niri instalada
+      - niri validate -c /etc/niri/config.kdl
     scripts:
       - os-release.sh # identifica o sistema como "Fujisawa OS"
-      - niri-config.sh # /etc/niri/config.kdl integrado ao COSMIC
-      - terminal.sh # Alacritty no lugar do COSMIC Terminal
-      - wallpaper.sh # papel de parede padrão do COSMIC
+      - terminal.sh # esconde o COSMIC Terminal (o Alacritty é o terminal)
+      - cosmic-defaults.sh # confere os padrões do COSMIC de files/overrides
+      - cursor.sh # cursor Bibata Modern Ice como padrão
       - zed.sh # Zed oficial (release do GitHub) em /usr/lib/zed.app
       - claude-code.sh # Claude Code oficial em /usr/bin/claude
       - oh-my-zsh.sh # oh-my-zsh em /usr/share/oh-my-zsh e zsh como shell padrão

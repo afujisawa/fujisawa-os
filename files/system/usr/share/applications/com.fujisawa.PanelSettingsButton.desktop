@@ -1,0 +1,18 @@
+[Desktop Entry]
+# Applet do painel do COSMIC: botão que abre as Configurações do COSMIC
+# (o cosmic-panel-button usa nome, ícone e Exec de com.system76.CosmicSettings).
+# Adicionado ao painel superior em
+# files/overrides/usr/share/cosmic/com.system76.CosmicPanel.Panel/v1/plugins_wings.
+Name=Settings Button
+Name[pt_BR]=Botão de Configurações
+Comment=Open COSMIC Settings
+Comment[pt_BR]=Abre as Configurações do COSMIC
+Type=Application
+Exec=cosmic-panel-button com.system76.CosmicSettings
+Terminal=false
+Categories=COSMIC;
+Keywords=COSMIC;Applet;Settings;
+Icon=com.system76.CosmicSettings
+NoDisplay=true
+X-CosmicApplet=true
+X-OverflowPriority=10
