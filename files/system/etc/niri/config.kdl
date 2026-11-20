@@ -6,6 +6,7 @@
 //  - Super+Alt+L bloqueia a tela com o cosmic-greeter
 //  - cores do anel de foco e das bordas na paleta Tokyo Night Storm
 //  - Print abre o Flameshot
+//  - Mod+Seta para cima/baixo troca de área de trabalho
 //  - cursor Bibata Modern Ice (bloco cursor no fim do arquivo)
 // O niri usa este arquivo (/etc/niri/config.kdl) enquanto o usuário não tiver
 // ~/.config/niri/config.kdl. Para personalizar só para você, copie para lá.
@@ -415,8 +416,9 @@ binds {
     Mod+Q repeat=false { close-window; }
 
     Mod+Left  { focus-column-left; }
-    Mod+Down  { focus-window-down; }
-    Mod+Up    { focus-window-up; }
+    // Mod+Seta para cima/baixo troca de área de trabalho (abaixo, junto dos
+    // demais atalhos de área de trabalho); o foco entre janelas da mesma
+    // coluna fica em Mod+J/K
     Mod+Right { focus-column-right; }
     Mod+H     { focus-column-left; }
     Mod+J     { focus-window-down; }
@@ -470,6 +472,8 @@ binds {
     // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
     // ...
 
+    Mod+Down           { focus-workspace-down; }
+    Mod+Up             { focus-workspace-up; }
     Mod+Page_Down      { focus-workspace-down; }
     Mod+Page_Up        { focus-workspace-up; }
     Mod+U              { focus-workspace-down; }
